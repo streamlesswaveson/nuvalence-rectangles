@@ -1,7 +1,6 @@
 package chadb.nuvalence.rectangles;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -14,6 +13,7 @@ public class Point {
 
     /**
      * Copy constructor
+     *
      * @param p
      */
     public Point(Point p) {
