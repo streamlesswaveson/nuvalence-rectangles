@@ -57,4 +57,42 @@ public class RectangleUtil {
         }
         return null;
     }
+
+    public static boolean adjacent(final Line line1, final Line line2) {
+        // if y axis same
+        int yaxis = line1.getA().getY();
+        if (yaxis == line1.getB().getY() && yaxis == line2.getA().getY() && yaxis == line2.getB().getY()) {
+            return betweenX(line1, line2) || betweenX(line2, line1);
+        }
+
+        int xaxis = line1.getA().getX();
+        if (xaxis == line1.getB().getX() && xaxis == line2.getA().getX() && xaxis == line2.getB().getX()) {
+            return betweenY(line1, line2) || betweenY(line2, line1);
+        }
+
+        return false;
+    }
+
+    private static boolean betweenX(final Line line1, final Line line2) {
+        return (line1.getA().getX() <= line2.getA().getX() && line2.getA().getX() <= line1.getB().getX());
+    }
+
+    private static boolean betweenY(final Line line1, final Line line2) {
+        return (line1.getA().getY() <= line2.getA().getY() && line2.getA().getY() <= line1.getB().getY());
+    }
+
+    public static boolean isAdjacent(Rectangle rect1, Rectangle rect2) {
+        for (Line line1 : rect1.getHorizontal()) {
+            for (Line line2 : rect2.getHorizontal()) {
+                if (adjacent(line1, line2)) return true;
+            }
+        }
+
+        for (Line line1 : rect1.getVertical()) {
+            for (Line line2 : rect2.getVertical()) {
+                if (adjacent(line1, line2)) return true;
+            }
+        }
+        return false;
+    }
 }

@@ -55,4 +55,8 @@ public class Rectangle {
         return RectangleUtil.contains(this, other.getLowerLeft()) &&
                 RectangleUtil.contains(this, other.getUpperRight());
     }
+
+    public boolean intersects(Rectangle other) {
+        return !RectangleUtil.intersection(this, other).isEmpty();
+    }
 }

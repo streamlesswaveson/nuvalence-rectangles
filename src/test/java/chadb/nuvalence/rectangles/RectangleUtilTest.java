@@ -1,51 +1,15 @@
 package chadb.nuvalence.rectangles;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
+import static chadb.nuvalence.rectangles.ShapeFactory.pointFromString;
+import static chadb.nuvalence.rectangles.ShapeFactory.rectFromString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RectangleUtilTest {
-
-    private static int[] intFromString(String s) {
-        return Stream.of(s.split(",")).mapToInt(Integer::parseInt).toArray();
-    }
-
-    private static Point pointFromString(String p1) {
-        int[] ints = intFromString(p1);
-        return new Point(ints[0], ints[1]);
-    }
-
-    private static Rectangle rectFromString(String s1) {
-        int[] ints = intFromString(s1);
-        return Rectangle.from(ints[0], ints[1], ints[2], ints[3]);
-    }
-
-    private static Line lineFromString(String l) {
-        int[] ints = intFromString(l);
-        return new Line(new Point(ints[0], ints[1]), new Point(ints[2], ints[3]));
-    }
-
-    @CsvSource(delimiter = '|',
-            value = {
-                    "0,0,0,3|-1,1,3,1|0,1",
-                    "-1,1,3,1|0,0,0,3|0,1",
-                    "-2,1,4,1|2,-3,2,3|2,1"
-            }
-    )
-    @ParameterizedTest
-    void shouldFindLineIntersect(String l1, String l2, String p1) {
-        Line line1 = lineFromString(l1);
-        Line line2 = lineFromString(l2);
-
-        Point expected = pointFromString(p1);
-        Point point = RectangleUtil.intersect(line1, line2);
-        assertThat(point).isEqualTo(expected);
-    }
 
     @CsvSource(delimiter = '|', value = {
             "0,0,3,3|-3,-3,1,1|0,1|1,0",
@@ -56,6 +20,9 @@ public class RectangleUtilTest {
     void shouldIntersectTwoPoints(String s1, String s2, String p1, String p2) {
         Rectangle r1 = rectFromString(s1);
         Rectangle r2 = rectFromString(s2);
+
+        assertThat(r1.intersects(r2)).isTrue();
+        assertThat(r2.intersects(r1)).isTrue();
 
         Set<Point> points = RectangleUtil.intersection(r1, r2);
         assertThat(points).isNotEmpty().hasSize(2);
@@ -75,6 +42,10 @@ public class RectangleUtilTest {
 
         Rectangle r1 = rectFromString(s1);
         Rectangle r2 = rectFromString(s2);
+
+        assertThat(r1.intersects(r2)).isTrue();
+        assertThat(r2.intersects(r1)).isTrue();
+
         Set<Point> points = RectangleUtil.intersection(r1, r2);
         assertThat(points).isNotEmpty().hasSize(4);
 
@@ -135,8 +106,88 @@ public class RectangleUtilTest {
         assertThat(rect1.contains(rect2)).isFalse();
     }
 
-    @Test
-    void shouldBeAdjacent() {
+    @CsvSource(delimiter = '|', value = {
+            "0,0,1,3|1,1,3,2", //ok
+            "0,0,1,3|-1,-1,2,0",
+            "0,0,1,3|-1,3,2,4",
+            "0,0,1,3|-2,1,0,2"
+    })
+    @ParameterizedTest
+    void shouldBeAdjacentSubline(String s1, String s2) {
+        Rectangle rect1 = rectFromString(s1);
+        Rectangle rect2 = rectFromString(s2);
+
+        assertThat(rect1.contains(rect2)).isFalse();
+        assertThat(rect2.contains(rect1)).isFalse();
+
+        assertThat(rect1.intersects(rect2)).isFalse();
+        assertThat(rect2.intersects(rect1)).isFalse();
+
+        assertThat(RectangleUtil.isAdjacent(rect1, rect2)).isTrue();
+
+    }
+
+    @CsvSource(delimiter = '|', value = {
+            "0,0,1,3|0,3,1,4",
+            "0,3,1,4|0,0,1,3",
+            "0,0,1,3|1,0,2,3",
+            "1,0,2,3|0,0,1,3",
+            "-1,0,0,3|0,0,1,3",
+            "0,-1,1,0|0,0,1,3"
+    })
+    @ParameterizedTest
+    void shouldBeAdjacentProper(String s1, String s2) {
+        Rectangle rect1 = rectFromString(s1);
+        Rectangle rect2 = rectFromString(s2);
+
+        assertThat(rect1.contains(rect2)).isFalse();
+        assertThat(rect2.contains(rect1)).isFalse();
+
+        assertThat(rect1.intersects(rect2)).isFalse();
+        assertThat(rect2.intersects(rect1)).isFalse();
+
+        assertThat(RectangleUtil.isAdjacent(rect1, rect2)).isTrue();
+
+    }
+
+    @CsvSource(delimiter = '|', value = {
+            "0,0,1,3|1,1,2,4",
+            "0,0,1,3|-3,3,1,4",
+            "0,0,1,3|-1,-1,0,3",
+            "0,0,1,3|0,-1,3,0"
+    })
+    @ParameterizedTest
+    void shouldBeAdjacentPartial(String s1, String s2) {
+        Rectangle rect1 = rectFromString(s1);
+        Rectangle rect2 = rectFromString(s2);
+
+        assertThat(rect1.contains(rect2)).isFalse();
+        assertThat(rect2.contains(rect1)).isFalse();
+
+        assertThat(rect1.intersects(rect2)).isFalse();
+        assertThat(rect2.intersects(rect1)).isFalse();
+
+        assertThat(RectangleUtil.isAdjacent(rect1, rect2)).isTrue();
+
+    }
+
+    @CsvSource(delimiter = '|', value = {
+            "0,0,1,3|2,0,3,3",
+            "0,0,1,3|-3,4,1,5",
+            "0,0,1,3|-3,-3,4,-2",
+    })
+    @ParameterizedTest
+    void shouldNotBeAdjacent(String s1, String s2) {
+        Rectangle rect1 = rectFromString(s1);
+        Rectangle rect2 = rectFromString(s2);
+
+        assertThat(rect1.contains(rect2)).isFalse();
+        assertThat(rect2.contains(rect1)).isFalse();
+
+        assertThat(rect1.intersects(rect2)).isFalse();
+        assertThat(rect2.intersects(rect1)).isFalse();
+
+        assertThat(RectangleUtil.isAdjacent(rect1, rect2)).isFalse();
 
     }
 
