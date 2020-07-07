@@ -1,4 +1,4 @@
-package chadb.nuvalence.rectangles;
+package chadb.nuvalence.rectangles.service;
 
 import java.util.HashSet;
 import java.util.List;

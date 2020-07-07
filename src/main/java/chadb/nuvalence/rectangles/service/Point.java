@@ -1,4 +1,4 @@
-package chadb.nuvalence.rectangles;
+package chadb.nuvalence.rectangles.service;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

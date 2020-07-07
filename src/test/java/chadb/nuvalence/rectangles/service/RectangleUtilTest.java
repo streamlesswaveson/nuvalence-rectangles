@@ -1,12 +1,12 @@
-package chadb.nuvalence.rectangles;
+package chadb.nuvalence.rectangles.service;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Set;
 
-import static chadb.nuvalence.rectangles.ShapeFactory.pointFromString;
-import static chadb.nuvalence.rectangles.ShapeFactory.rectFromString;
+import static chadb.nuvalence.rectangles.service.ShapeFactory.pointFromString;
+import static chadb.nuvalence.rectangles.service.ShapeFactory.rectFromString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RectangleUtilTest {

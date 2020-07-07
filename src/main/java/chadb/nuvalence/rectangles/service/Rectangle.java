@@ -1,9 +1,10 @@
-package chadb.nuvalence.rectangles;
+package chadb.nuvalence.rectangles.service;
 
 import lombok.EqualsAndHashCode;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode
 public class Rectangle {
@@ -58,5 +59,13 @@ public class Rectangle {
 
     public boolean intersects(Rectangle other) {
         return !RectangleUtil.intersection(this, other).isEmpty();
+    }
+
+    public Set<Point> intersection(Rectangle other) {
+        return RectangleUtil.intersection(this, other);
+    }
+
+    public boolean isAdjacent(Rectangle other) {
+        return RectangleUtil.isAdjacent(this, other);
     }
 }
