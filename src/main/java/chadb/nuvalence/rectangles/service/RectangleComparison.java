@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.Set;
 
+/**
+ * Convenience wrapper comparing two rectangles
+ */
 @Builder
 @Getter
 public class RectangleComparison {

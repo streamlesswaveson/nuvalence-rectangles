@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class RectangleServiceImpl implements RectangleService{
+public class RectangleServiceImpl implements RectangleService {
     @Override
     public Rectangle createRectangle(Integer lx, Integer ly, Integer ux, Integer uy) {
         return Rectangle.from(lx, ly, ux, uy);

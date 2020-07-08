@@ -1,9 +1,5 @@
 package chadb.nuvalence.rectangles.service;
 
-import chadb.nuvalence.rectangles.service.Line;
-import chadb.nuvalence.rectangles.service.Point;
-import chadb.nuvalence.rectangles.service.Rectangle;
-
 import java.util.stream.Stream;
 
 public class ShapeFactory {

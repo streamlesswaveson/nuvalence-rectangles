@@ -1,6 +1,5 @@
 package chadb.nuvalence.rectangles.service;
 
-import chadb.nuvalence.rectangles.service.Point;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
